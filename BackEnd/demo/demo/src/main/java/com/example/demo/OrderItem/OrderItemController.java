@@ -11,30 +11,40 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/orderItems")
+@CrossOrigin("http://localhost:3000")
 public class OrderItemController {
 
     private final OrderItemService orderItemService;
     private final MenuService menuService;
 
+    private final OrderItemRepository orderItemRepository;
+
     @Autowired
-    public OrderItemController(OrderItemService orderItemService, MenuService menuService) {
+    public OrderItemController(OrderItemService orderItemService, MenuService menuService, OrderItemRepository orderItemRepository) {
         this.orderItemService = orderItemService;
         this.menuService = menuService;
+        this.orderItemRepository = orderItemRepository;
     }
 
     // Create a new order item
-    @PostMapping
-    public ResponseEntity<OrderItem> createOrderItem(@RequestBody OrderItemRequest orderItemRequest) {
-        Menu menu = menuService.getMenuById(orderItemRequest.getMenuId());
-        if(menu == null){
-            return ResponseEntity.notFound().build();
-        }
-        OrderItem newOrderItem = orderItemService.createOrderItem(orderItemRequest);
+//    @PostMapping("/create")
+//    public ResponseEntity<OrderItem> createOrderItem(@RequestBody OrderItemRequest orderItemRequest) {
+//        Menu menu = menuService.getMenuById(orderItemRequest.getMenuId());
+//        if (menu == null) {
+//            return ResponseEntity.notFound().build();
+//        }
+//
+//        OrderItem newOrderItem = orderItemService.createOrderItem(orderItemRequest);
+//
+//        return ResponseEntity.status(HttpStatus.CREATED).body(newOrderItem);
+//    }
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(newOrderItem);
+    @PostMapping("/batch-create")
+    public ResponseEntity<List<OrderItem>> createOrderItems(@RequestBody List<OrderItem> orderItems) {
+        List<OrderItem> createdOrderItems = orderItemService.createOrderItems(orderItems);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdOrderItems);
     }
 
-    // Get all order items
     @GetMapping
     public ResponseEntity<List<OrderItem>> getAllOrderItems() {
         List<OrderItem> orderItems = orderItemService.getAllOrderItems();
@@ -49,6 +59,15 @@ public class OrderItemController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(orderItem);
+    }
+
+    @GetMapping("/byOrder/{orderId}")
+    public ResponseEntity<List<OrderItem>> getOrderItemsByOrderId(@PathVariable Long orderId) {
+        List<OrderItem> orderItems = orderItemRepository.findByOrderId(orderId);
+        if (orderItems.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(orderItems);
     }
 
     // Update an order item by ID

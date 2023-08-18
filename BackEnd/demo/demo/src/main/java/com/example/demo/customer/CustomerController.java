@@ -3,15 +3,13 @@ package com.example.demo.customer;
 import com.example.demo.appuser.AppUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/customers")
+@CrossOrigin("http://localhost:3000")
 public class CustomerController {
     private final CustomerService customerService;
 
@@ -28,9 +26,21 @@ public class CustomerController {
 
     @GetMapping("/customer/{id}")
     public ResponseEntity<AppUser> getCustomerById(@PathVariable("id") Long id) {
+        //int bleh = id.intValue();
         AppUser customer = customerService.getCustomerById(id);
         if (customer != null) {
             return ResponseEntity.ok(customer);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<AppUser> updateCustomer(@PathVariable Long id, @RequestBody AppUser updatedCustomer) {
+        AppUser updated = customerService.updateCustomer(id, updatedCustomer);
+
+        if (updated != null) {
+            return ResponseEntity.ok(updated);
         } else {
             return ResponseEntity.notFound().build();
         }

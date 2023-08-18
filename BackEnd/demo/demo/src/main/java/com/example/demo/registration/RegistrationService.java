@@ -42,15 +42,6 @@ public class RegistrationService {
                             registrationDTO.getPassword(),
                             registrationDTO.getAppUserRole())
         ));
-//        String token = appUserService.signUpUser(
-//                new AppUser(
-//                        registrationDTO.getFirstName(),
-//                        registrationDTO.getLastName(),
-//                        registrationDTO.getEmail(),
-//                        registrationDTO.getPassword(),
-//                        registrationDTO.getAppUserRole()
-//                )
-//        );
 
         boolean verificationStatus = !confirmationTokenService.isTokenConfirmed(token);
 
@@ -62,6 +53,39 @@ public class RegistrationService {
 
         return new RegistrationResponse(token, verificationStatus);
     }
+//    public RegistrationResponse register(RegistrationDTO registrationDTO) {
+//        boolean isValidEmail = emailValidator.test(registrationDTO.getEmail());
+//        if (!isValidEmail) {
+//            throw new IllegalStateException("Invalid email: " + registrationDTO.getEmail());
+//        }
+//
+//        AppUser appUser = new AppUser(
+//                registrationDTO.getFirstName(),
+//                registrationDTO.getLastName(),
+//                registrationDTO.getEmail(),
+//                registrationDTO.getPassword(),
+//                registrationDTO.getAppUserRole()
+//        );
+//
+//        Restaurant restaurant = new Restaurant(
+//                (long) 0,
+//                registrationDTO.getRestaurantName(),
+//                registrationDTO.getRestaurantLocation(),
+//                appUser
+//        );
+//
+//        String token = appUserService.signUpUser(restaurant);
+//
+//        boolean verificationStatus = !confirmationTokenService.isTokenConfirmed(token);
+//
+//        String link = "http://localhost:8080/registration/confirm?token=" + token;
+//        emailSender.send(
+//                registrationDTO.getEmail(),
+//                buildEmail(registrationDTO.getFirstName(), link)
+//        );
+//
+//        return new RegistrationResponse(token, verificationStatus);
+//    }
 
     @Transactional
     public String confirmToken(String token) {

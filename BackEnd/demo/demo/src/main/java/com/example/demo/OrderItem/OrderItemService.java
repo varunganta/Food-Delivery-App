@@ -19,20 +19,24 @@ public class OrderItemService {
         this.menuRepository = menuRepository;
     }
 
-    public OrderItem createOrderItem(OrderItemRequest orderItemRequest) {
-        Optional<Menu> menuOptional = menuRepository.findById(orderItemRequest.getMenuId());
-        if (menuOptional.isPresent()) {
-            Menu menu = menuOptional.get();
+//    public OrderItem createOrderItem(OrderItemRequest orderItemRequest) {
+//        Optional<Menu> menuOptional = menuRepository.findById(orderItemRequest.getMenuId());
+//        if (menuOptional.isPresent()) {
+//            Menu menu = menuOptional.get();
+//
+//            OrderItem newOrderItem = new OrderItem();
+//            newOrderItem.setOrderId(orderItemRequest.getOrderId());
+//            newOrderItem.setMenuId(orderItemRequest.getMenuId());
+//            newOrderItem.setPrice(orderItemRequest.getPrice());
+//
+//            return orderItemRepository.save(newOrderItem);
+//        } else {
+//            throw new IllegalArgumentException("Menu with ID " + orderItemRequest.getMenuId() + " not found");
+//        }
+//    }
 
-            OrderItem newOrderItem = new OrderItem();
-            newOrderItem.setOrderId(orderItemRequest.getOrderId());
-            newOrderItem.setMenuId(orderItemRequest.getMenuId());
-            newOrderItem.setPrice(orderItemRequest.getPrice());
-
-            return orderItemRepository.save(newOrderItem);
-        } else {
-            throw new IllegalArgumentException("Menu with ID " + orderItemRequest.getMenuId() + " not found");
-        }
+    public List<OrderItem> createOrderItems(List<OrderItem> orderItems) {
+        return orderItemRepository.saveAll(orderItems);
     }
 
     public List<OrderItem> getAllOrderItems() {

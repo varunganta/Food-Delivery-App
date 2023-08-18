@@ -1,12 +1,14 @@
 package com.example.demo.restaurant;
 
 import com.example.demo.appuser.AppUser;
+import com.example.demo.orders.Orders;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -31,6 +33,9 @@ public class Restaurant {
     @OneToOne
     @JoinColumn(name = "id")
     private AppUser appUser;
+
+    @OneToMany(mappedBy = "restaurantId", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Orders> orders;
 
     public Restaurant(Long restaurantId,
                       String restaurantName,

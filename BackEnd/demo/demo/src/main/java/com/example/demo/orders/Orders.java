@@ -17,7 +17,6 @@ import java.util.List;
 @Getter
 @Setter
 @EqualsAndHashCode
-@NoArgsConstructor
 @Entity
 public class Orders {
     @Id
@@ -46,10 +45,17 @@ public class Orders {
     private LocalDateTime createdAt;
     private LocalDateTime acceptedAt;
     private LocalDateTime completedAt;
-    private double totalPrice;
+    private Long totalPrice;
+
+//    @Column(name = "item_id")
+//    private Long itemId;
 
 //    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
 //    private List<OrderItem> orderItems;
+
+//    @OneToMany
+//    @JoinColumn(name = "order_id")
+//    private List<OrderItem> orderItem;
 
     public Orders(Long orderId,
                       Long customerId,
@@ -58,7 +64,7 @@ public class Orders {
                   LocalDateTime createdAt,
                   LocalDateTime acceptedAt,
                   LocalDateTime completedAt,
-                  double totalPrice
+                  Long totalPrice
                   ) {
         this.orderId = orderId;
         this.customerId = customerId;
@@ -69,4 +75,9 @@ public class Orders {
         this.completedAt = completedAt;
         this.totalPrice = totalPrice;
     }
+
+    public Orders() {
+
+    }
+
 }

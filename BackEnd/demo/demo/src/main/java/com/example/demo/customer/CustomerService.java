@@ -34,26 +34,38 @@ public class CustomerService {
         }
     }
 
-//    public AppUser createCustomer(AppUser customer) {
-//        // Make sure the role is set to 'CUSTOMER'
-//        customer.setUserRole(AppUserRole.CUSTOMER);
-//        return appUserService.signUpUser(customer);
+//    public AppUser updateCustomer(Long id, AppUser updatedCustomer) {
+//        AppUser existingCustomer = getCustomerById(id);
+//        if (existingCustomer == null) {
+//            return null;
+//        }
+//
+//        existingCustomer.setFirstName(updatedCustomer.getFirstName());
+//        existingCustomer.setLastName(updatedCustomer.getLastName());
+//        //existingCustomer.setEmail(updatedCustomer.getEmail());
+//        existingCustomer.setPassword(updatedCustomer.getPassword());
+//
+//        return appUserService.updateAppUser(existingCustomer);
 //    }
 
-    public AppUser updateCustomer(Long id, AppUser updatedCustomer) {
+    public AppUser updateCustomer(Long id, AppUser customerRequest) {
         AppUser existingCustomer = getCustomerById(id);
         if (existingCustomer == null) {
             return null;
         }
 
-        existingCustomer.setFirstName(updatedCustomer.getFirstName());
-        existingCustomer.setLastName(updatedCustomer.getLastName());
-        existingCustomer.setEmail(updatedCustomer.getEmail());
-        existingCustomer.setPassword(updatedCustomer.getPassword());
+        if (customerRequest.getFirstName() != null) {
+            existingCustomer.setFirstName(customerRequest.getFirstName());
+        }
+        if (customerRequest.getLastName() != null) {
+            existingCustomer.setLastName(customerRequest.getLastName());
+        }
+        if (customerRequest.getPassword() != null) {
+            existingCustomer.setPassword(customerRequest.getPassword());
+        }
 
         return appUserService.updateAppUser(existingCustomer);
     }
-
     public boolean deleteCustomer(Long id) {
         AppUser existingCustomer = getCustomerById(id);
         if (existingCustomer == null) {

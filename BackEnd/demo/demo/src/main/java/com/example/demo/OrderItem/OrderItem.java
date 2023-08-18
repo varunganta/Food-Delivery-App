@@ -1,11 +1,14 @@
 package com.example.demo.OrderItem;
 
+import com.example.demo.appuser.AppUser;
+import com.example.demo.orders.Orders;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -36,6 +39,9 @@ public class OrderItem {
     private Long menuId;
 
     private double price;
+
+//    @OneToMany(mappedBy = "orderItem", cascade = CascadeType.ALL)
+//    private List<Orders> orders;
 
     public OrderItem(Long orderId, Long menuId, double price) {
         this.orderId = orderId;

@@ -36,7 +36,17 @@ public class RestaurantController {
         }
     }
 
-    @PutMapping("/restaurant/{id}")
+    @GetMapping("/restaurant/by-app-user/{appUserId}")
+    public ResponseEntity<Long> getRestaurantIdByAppUserId(@PathVariable("appUserId") int appUserId) {
+        Long restaurantId = restaurantService.getRestaurantIdByAppUserId( appUserId);
+        if (restaurantId != null) {
+            return ResponseEntity.ok(restaurantId);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PutMapping("/restaurant/update/{id}")
     public ResponseEntity<Restaurant> updateRestaurantById(@PathVariable Long id, @RequestBody RestaurantRequest restaurantRequest) {
         Restaurant updatedRestaurant = restaurantService.updateRestaurantById(id, restaurantRequest);
         if (updatedRestaurant != null) {

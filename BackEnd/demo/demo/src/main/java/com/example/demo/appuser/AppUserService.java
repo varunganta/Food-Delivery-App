@@ -1,7 +1,9 @@
 package com.example.demo.appuser;
 
+import com.example.demo.customer.CustomerRepository;
 import com.example.demo.login.LoginRequest;
 import com.example.demo.login.LoginResponse;
+import com.example.demo.registration.RegistrationDTO;
 import com.example.demo.registration.token.ConfirmationToken;
 import com.example.demo.registration.token.ConfirmationTokenService;
 import com.example.demo.restaurant.Restaurant;
@@ -35,6 +37,9 @@ public class AppUserService implements UserDetailsService {
     @Autowired
     private RestaurantRepository restaurantRepository;
 
+    @Autowired
+    private CustomerRepository customerRepository;
+
     BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
     @Autowired
@@ -62,6 +67,7 @@ public class AppUserService implements UserDetailsService {
     }
 
     public AppUser getAppUserById(Long userId) {
+//        int uId = userId.intValue();
         return userRepository.findById(userId).orElse(null);
     }
 
@@ -98,6 +104,41 @@ public class AppUserService implements UserDetailsService {
 
         return token;
     }
+//    public String signUpUser(RegistrationDTO registrationDTO) {
+//        boolean userExists = userRepository
+//                .findByEmail(registrationDTO.getEmail())
+//                .isPresent();
+//        if (userExists) {
+//            throw new IllegalStateException("email already in use");
+//        }
+//
+//        String encodedPassword = bCryptPasswordEncoder
+//                .encode(registrationDTO.getPassword());
+//
+//        AppUser appUser = new AppUser();
+//        appUser.setFirstName(registrationDTO.getFirstName());
+//        appUser.setLastName(registrationDTO.getLastName());
+//        appUser.setEmail(registrationDTO.getEmail());
+//        appUser.setPassword(encodedPassword);
+//        appUser.setAppUserRole(registrationDTO.getAppUserRole());
+//
+//        userRepository.save(appUser);
+//
+//        String token = UUID.randomUUID().toString();
+//
+//        ConfirmationToken confirmationToken = new ConfirmationToken(
+//                token,
+//                LocalDateTime.now(),
+//                LocalDateTime.now().plusMinutes(15),
+//                appUser
+//        );
+//
+//        confirmationTokenService.saveConfirmationToken(confirmationToken);
+//
+//        // TODO: SEND EMAIL
+//
+//        return token;
+//    }
     public int enableAppUser(String email) {
         return userRepository.enableAppUser(email);
     }
@@ -112,5 +153,17 @@ public class AppUserService implements UserDetailsService {
 
     public void deleteAppUser(AppUser existingCustomer) {
         userRepository.delete(existingCustomer);
+    }
+
+    public String getUserRoleByEmail(String email) {
+        Optional<AppUser> userOptional = userRepository.findByEmail(email);
+
+        if (userOptional.isPresent()) {
+            AppUser user = userOptional.get();
+            String role = String.valueOf(user.getAppUserRole());
+            return role;
+        } else {
+            throw new RuntimeException("User not found with the provided email");
+        }
     }
 }

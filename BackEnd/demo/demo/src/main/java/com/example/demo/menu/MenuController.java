@@ -2,9 +2,11 @@ package com.example.demo.menu;
 
 import com.example.demo.restaurant.Restaurant;
 import com.example.demo.restaurant.RestaurantService;
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -50,7 +52,16 @@ public class MenuController {
         return ResponseEntity.status(HttpStatus.CREATED).body(newMenu);
     }
 
-    @PutMapping("menu/{itemId}")
+//    @PutMapping("menu/{itemId}")
+//    public ResponseEntity<Menu> updateMenuById(@PathVariable Long itemId, @RequestBody MenuRequest menuRequest) {
+//        Menu updatedMenu = menuService.updateMenuById(itemId, menuRequest);
+//        if (updatedMenu != null) {
+//            return ResponseEntity.ok(updatedMenu);
+//        } else {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
+    @PutMapping("/menu/{itemId}")
     public ResponseEntity<Menu> updateMenuById(@PathVariable Long itemId, @RequestBody MenuRequest menuRequest) {
         Menu updatedMenu = menuService.updateMenuById(itemId, menuRequest);
         if (updatedMenu != null) {
@@ -60,7 +71,7 @@ public class MenuController {
         }
     }
 
-    @DeleteMapping("menu/{itemId}")
+    @DeleteMapping("/menu/{itemId}")
     public ResponseEntity<Void> deleteMenuById(@PathVariable Long itemId) {
         boolean isDeleted = menuService.deleteMenuById(itemId);
         if (isDeleted) {
@@ -68,6 +79,12 @@ public class MenuController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping("/by-restaurant/{restaurantId}")
+    public ResponseEntity<List<Menu>> getMenuByRestaurantId(@PathVariable Long restaurantId) {
+        List<Menu> menuItems = menuService.getMenuByRestaurantId(restaurantId);
+        return ResponseEntity.ok(menuItems);
     }
 
 

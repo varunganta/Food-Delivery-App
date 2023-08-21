@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import SideMenu from '/home/varun/Desktop/FrontEnd/login-front/src/layout/SideMenu.js';
+import SideMenuMain from '../layout/SideMenuMain.js';
 import backgroundImage from '/home/varun/Desktop/FrontEnd/login-front/src/25386.jpg';
 
 const Home = () => {
@@ -11,7 +11,7 @@ const Home = () => {
       </div>
       <div className="content" style={{ display: 'flex', height: '100%' }}>
         <div className="side-menu" style={{ flex: '0 0 10vw' }}>
-          <SideMenu />
+          <SideMenuMain />
         </div>
 
       </div>

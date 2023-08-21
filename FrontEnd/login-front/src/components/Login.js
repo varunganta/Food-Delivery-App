@@ -18,33 +18,48 @@ const Login = () => {
     };
 
     try {
-          const response = await axios.post(
+        const response = await axios.post(
             'http://localhost:8080/login',
             requestBody
-          );
-          console.log('Response:', response);
-          const { loginStatus, errorMessage, jwt } = response.data;
-          console.log('Error Message:', errorMessage);
+        );
 
-          if (loginStatus) {
+        const { loginStatus, errorMessage, jwt, id } = response.data;
+
+        if(loginStatus){
+            const roleResponse = await axios.get(
+                `http://localhost:8080/appUser/role?email=${email}`,
+                {
+                    headers: {
+                        Authorization: `$(jwt)`
+                    }
+                }
+            );
+            const role = roleResponse.data.role;
             message.success('Login successful!');
-            navigate('/main', { state: { email: email } });
-            localStorage.setItem('token', jwt);
-            localStorage.setItem('email', email);
-            //localStorage.setItem('password', password);
-            axios.defaults.headers.common['Authorization'] = `Bearer ${jwt}`;
-          } else {
-            message.error(errorMessage) // I am not able to show messages from the backend
-          }
-        } catch (error) {
-            console.error(error);
-            if (error.response && error.response.status === 401) {
-              message.error('The account is disabled');
-            } else {
-              message.error('Invalid username or password');
-            }
-          }
 
+            if(role === 'RESTAURANT'){
+                navigate('/restaurant-home', { state: { email: email } });
+                localStorage.setItem('token', jwt);
+                localStorage.setItem('email', email);
+                localStorage.setItem('id', Number(id));
+            } else {
+                navigate('/customer-home', { state: { email: email } });
+                localStorage.setItem('token', jwt);
+                localStorage.setItem('email', email);
+                localStorage.setItem('id', Number(id));
+            }
+            axios.defaults.headers.common['Authorization'] = `Bearer ${jwt}`;
+        } else {
+            message.error(errorMessage);
+        }
+    } catch (error) {
+        console.error(error);
+        if (error.response && error.response.status === 401) {
+            message.error('The account is disabled');
+        } else {
+            message.error('Invalid username or password');
+        }
+    }
   };
 
   return (

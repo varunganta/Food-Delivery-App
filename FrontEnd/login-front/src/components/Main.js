@@ -20,7 +20,7 @@ const Main = ({ handleLogout }) => {
   return (
     <div style={{ backgroundImage:`url(${image})`,backgroundRepeat:"no-repeat",backgroundPosition: "center", width: '100vw', height: '100vh'}}>
         <div style={{ textAlign: 'center' }}>
-          <h1>Welcome to the Main Page</h1>
+          <h1>Logout?</h1>
           <Button type="primary" onClick={handleLogoutClick}>
             Logout
           </Button>

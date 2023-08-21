@@ -10,7 +10,7 @@ const Registration = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmpassword, setConfirmPassword] = useState('');
-  const [userRole, setUserRole] = useState('RESTAURANT')
+  const [appUserRole, setAppUserRole] = useState('')
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -32,7 +32,7 @@ const Registration = () => {
       email: email,
       password: password,
       confirmPassword: confirmpassword,
-      userRole: userRole,
+      appUserRole: appUserRole,
     };
     //console.error("rendered");
     try {
@@ -40,7 +40,6 @@ const Registration = () => {
 
       if (response.data && response.data.verificationStatus === true) {
         message.info('Registration successful. Please check your email for verification.');
-        //navigate.push('/login');
       } else {
         message.error('Account with entered email exists');
       }
@@ -145,9 +144,9 @@ const Registration = () => {
             <div className = "form-group">
                 <label htmlFor="userRole">User Role</label>
                   <Radio.Group
-                    id="userRole"
-                    onChange={(e) => setUserRole(e.target.value)}
-                    value={userRole}
+                    id="appUserRole"
+                    onChange={(e) => setAppUserRole(e.target.value)}
+                    value={appUserRole}
                     style={{ color: 'white' }}
                   >
                     <Radio style={{ color: 'white' }} value="RESTAURANT">Restaurant</Radio>

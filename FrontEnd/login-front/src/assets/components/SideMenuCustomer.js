@@ -5,21 +5,34 @@ import { MenuOutlined } from '@ant-design/icons';
 
 const { Panel } = Collapse;
 
-const SideMenu = () => {
+const SideMenuCustomer = () => {
   const navigate = useNavigate();
+
   const menuItems = [
     {
-      key: '/login',
-      label: 'Login',
+      key: 'customer-home',
+      label: 'Home',
     },
     {
-      key: '/registration',
-      label: 'Register',
+      key: 'order-history',
+      label: 'Order History',
     },
+    {
+        key: 'cart',
+        label: 'Cart',
+    },
+    {
+      key: 'customer-settings',
+      label: 'Settings',
+    },
+    {
+      key: 'main',
+      label: 'Logout',
+    }
   ];
 
   const handleMenuClick = ({ key }) => {
-    navigate(key);
+    navigate(`/${key}`);
   };
 
   return (
@@ -34,6 +47,8 @@ const SideMenu = () => {
         style={{
           background: '#000000',
           color: '#ffffff',
+          height: '100vh',
+          overflow: 'hidden'
         }}
       >
         <Menu
@@ -59,4 +74,4 @@ const SideMenu = () => {
   );
 };
 
-export default SideMenu;
+export default SideMenuCustomer;

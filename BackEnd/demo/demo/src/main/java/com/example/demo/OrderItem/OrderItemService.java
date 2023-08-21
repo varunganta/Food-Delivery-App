@@ -57,6 +57,7 @@ public class OrderItemService {
         existingOrderItem.setOrderId(updatedOrderItem.getOrderId());
         existingOrderItem.setMenuId(updatedOrderItem.getMenuId());
         existingOrderItem.setPrice(updatedOrderItem.getPrice());
+        existingOrderItem.setQuantity(updatedOrderItem.getQuantity());
 
         return orderItemRepository.save(existingOrderItem);
     }

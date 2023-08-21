@@ -40,12 +40,15 @@ public class OrderItem {
 
     private double price;
 
+    private Long quantity;
+
 //    @OneToMany(mappedBy = "orderItem", cascade = CascadeType.ALL)
 //    private List<Orders> orders;
 
-    public OrderItem(Long orderId, Long menuId, double price) {
+    public OrderItem(Long orderId, Long menuId, double price, Long quantity) {
         this.orderId = orderId;
         this.menuId = menuId;
         this.price = price;
+        this.quantity = quantity;
     }
 }

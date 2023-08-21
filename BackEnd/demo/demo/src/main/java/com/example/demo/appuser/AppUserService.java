@@ -67,7 +67,6 @@ public class AppUserService implements UserDetailsService {
     }
 
     public AppUser getAppUserById(Long userId) {
-//        int uId = userId.intValue();
         return userRepository.findById(userId).orElse(null);
     }
 
@@ -100,45 +99,10 @@ public class AppUserService implements UserDetailsService {
         confirmationTokenService.saveConfirmationToken(
                 confirmationToken);
 
-    //        TODO: SEND EMAIL
 
         return token;
     }
-//    public String signUpUser(RegistrationDTO registrationDTO) {
-//        boolean userExists = userRepository
-//                .findByEmail(registrationDTO.getEmail())
-//                .isPresent();
-//        if (userExists) {
-//            throw new IllegalStateException("email already in use");
-//        }
-//
-//        String encodedPassword = bCryptPasswordEncoder
-//                .encode(registrationDTO.getPassword());
-//
-//        AppUser appUser = new AppUser();
-//        appUser.setFirstName(registrationDTO.getFirstName());
-//        appUser.setLastName(registrationDTO.getLastName());
-//        appUser.setEmail(registrationDTO.getEmail());
-//        appUser.setPassword(encodedPassword);
-//        appUser.setAppUserRole(registrationDTO.getAppUserRole());
-//
-//        userRepository.save(appUser);
-//
-//        String token = UUID.randomUUID().toString();
-//
-//        ConfirmationToken confirmationToken = new ConfirmationToken(
-//                token,
-//                LocalDateTime.now(),
-//                LocalDateTime.now().plusMinutes(15),
-//                appUser
-//        );
-//
-//        confirmationTokenService.saveConfirmationToken(confirmationToken);
-//
-//        // TODO: SEND EMAIL
-//
-//        return token;
-//    }
+
     public int enableAppUser(String email) {
         return userRepository.enableAppUser(email);
     }

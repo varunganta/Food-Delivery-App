@@ -12,9 +12,6 @@ import java.util.Map;
 @RequestMapping("/appUser")
 @CrossOrigin("*")
 public class AppUserController {
-//    @Autowired
-//    private AppUserService appUserService;
-
     private final AppUserService appUserService;
 
     @Autowired

@@ -29,7 +29,7 @@ public class AppUser implements UserDetails {
             strategy = GenerationType.SEQUENCE,
             generator = "user_sequence"
     )
-    private int id;
+    private Long id;
     private String firstName;
     private String lastName;
     private String email;
@@ -98,11 +98,11 @@ public class AppUser implements UserDetails {
         return enabled;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

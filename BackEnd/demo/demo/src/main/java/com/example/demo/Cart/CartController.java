@@ -31,31 +31,11 @@ public class CartController {
         return ResponseEntity.status(HttpStatus.CREATED).body(cartItem);
     }
 
-//    @PostMapping("/add")
-//    public ResponseEntity<Cart> addItemToCart(@RequestBody CartRequest cartRequest) {
-//        Long itemId = cartRequest.getItemId();
-//        Long appUserId = cartRequest.getAppUserId();
-//        int quantity = cartRequest.getQuantity();
-//        Long restaurantId = cartRequest.getRestaurantId();
-//
-//        Cart cartItem = cartService.addItemToCart(itemId, appUserId, quantity, restaurantId);
-//        return ResponseEntity.status(HttpStatus.CREATED).body(cartItem);
-//    }
-
     @GetMapping("/{userId}")
     public ResponseEntity<List<Cart>> getCartItemsByUser(@PathVariable Long userId) {
         List<Cart> cartItems = cartService.getCartItemsByUser(userId);
         return ResponseEntity.ok(cartItems);
     }
-
-//    @PutMapping("/update/{cartItemId}")
-//    public ResponseEntity<Cart> updateCartItemQuantity(@RequestBody CartRequest cartRequest) {
-//        Long itemId = cartRequest.getItemId();
-//        int newQuantity = cartRequest.getQuantity();
-//
-//        Cart updatedCartItem = cartService.updateCartItemQuantity(itemId, newQuantity);
-//        return ResponseEntity.ok(updatedCartItem);
-//    }
 
     @PutMapping("/update/{cartItemId}")
     public ResponseEntity<Cart> updateCartItemQuantity(

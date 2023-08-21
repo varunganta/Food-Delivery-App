@@ -54,14 +54,14 @@ public class LoginController {
         AppUser appUser = userRepository.findUserByEmail(loginRequest.getEmail());
 
         if (appUser == null) {
-            LoginResponse loginResponse = new LoginResponse(null, null, null, 0);
+            LoginResponse loginResponse = new LoginResponse(null, null, null, 0L);
             loginResponse.setLoginStatus(false);
             loginResponse.setErrorMessage("Invalid username or password");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(loginResponse);
         }
 
         if (!appUser.isEnabled()) {
-            LoginResponse loginResponse = new LoginResponse(null, null, null, 0);
+            LoginResponse loginResponse = new LoginResponse(null, null, null, 0L);
             loginResponse.setLoginStatus(false);
             loginResponse.setErrorMessage("Account is disabled");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(loginResponse);
@@ -69,7 +69,7 @@ public class LoginController {
 
         String firstName = appUser.getFirstName();
         String email = appUser.getEmail();
-        int id = appUser.getId();
+        Long id = appUser.getId();
 
         LoginResponse loginResponse = new LoginResponse(jwt, firstName, email, id);
         return ResponseEntity.ok(loginResponse);

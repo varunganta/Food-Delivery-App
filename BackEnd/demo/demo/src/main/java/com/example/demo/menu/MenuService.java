@@ -69,7 +69,7 @@ public class MenuService {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String restaurantEmail = authentication.getName();
-        int appUserId = userRepository.findByEmail(restaurantEmail).get().getId();
+        Long appUserId = userRepository.findByEmail(restaurantEmail).get().getId();
         Long restaurantId = restaurantRepository.findByAppUserId(appUserId);
         boolean isAuthorized = authentication.getAuthorities().stream()
                 .anyMatch(auth -> auth.getAuthority().equals("RESTAURANT")
@@ -108,7 +108,7 @@ public class MenuService {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String restaurantEmail = authentication.getName();
-        int appUserId = userRepository.findByEmail(restaurantEmail).get().getId();
+        Long appUserId = userRepository.findByEmail(restaurantEmail).get().getId();
         Long restaurantId = restaurantRepository.findByAppUserId(appUserId);
 
         boolean isAuthorized = authentication.getAuthorities().stream()

@@ -20,8 +20,6 @@ public class RegistrationDTO {
     }
 
     public RegistrationDTO(String firstName, String lastName, String email, String password, boolean verified, AppUserRole appUserRole, String restaurantName, String restaurantLocation) {
-        // add message field
-        // add success - whether login/registration succeeded or not
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;

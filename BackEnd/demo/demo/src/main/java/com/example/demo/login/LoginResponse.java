@@ -4,12 +4,12 @@ public class LoginResponse {
     private boolean loginStatus;
     private String errorMessage;
     private final String jwt;
-    private int id;
+    private Long id;
     private String firstName;
     private String email;
 
 
-    public LoginResponse(String jwt, String firstName, String email, int id){
+    public LoginResponse(String jwt, String firstName, String email, Long id){
         this.jwt = jwt;
         this.firstName = firstName;
         this.email = email;
@@ -47,11 +47,11 @@ public class LoginResponse {
         this.errorMessage = errorMessage;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

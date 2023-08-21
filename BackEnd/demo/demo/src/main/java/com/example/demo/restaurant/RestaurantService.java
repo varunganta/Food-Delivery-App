@@ -51,6 +51,29 @@ public class RestaurantService {
         }
     }
 
+//    public Restaurant updateRestaurantById(Long restaurantId, RestaurantRequest restaurantRequest) {
+//        Optional<Restaurant> optionalRestaurant = restaurantRepository.findById(restaurantId);
+//        if (optionalRestaurant.isEmpty()) {
+//            return null;
+//        }
+//
+//        Restaurant existingRestaurant = optionalRestaurant.get();
+//
+//        // Update the properties of the existing restaurant based on the request
+//        //existingRestaurant.setRestaurantName(restaurantRequest.getRestaurantName());
+//        //existingRestaurant.setRestaurantLocation(restaurantRequest.getRestaurantLocation());
+//        String updatedName = restaurantRequest.getRestaurantName();
+//        if (updatedName != null) {
+//            existingRestaurant.setRestaurantName(updatedName);
+//        }
+//
+//        String updatedLocation = restaurantRequest.getRestaurantLocation();
+//        if (updatedLocation != null) {
+//            existingRestaurant.setRestaurantLocation(updatedLocation);
+//        }
+//
+//        return restaurantRepository.save(existingRestaurant);
+//    }
     public Restaurant updateRestaurantById(Long restaurantId, RestaurantRequest restaurantRequest) {
         Optional<Restaurant> optionalRestaurant = restaurantRepository.findById(restaurantId);
         if (optionalRestaurant.isEmpty()) {
@@ -59,24 +82,21 @@ public class RestaurantService {
 
         Restaurant existingRestaurant = optionalRestaurant.get();
 
-        // Update the properties of the existing restaurant based on the request
-        //existingRestaurant.setRestaurantName(restaurantRequest.getRestaurantName());
-        //existingRestaurant.setRestaurantLocation(restaurantRequest.getRestaurantLocation());
         String updatedName = restaurantRequest.getRestaurantName();
-        if (updatedName != null) {
+        if (updatedName != null && !updatedName.isEmpty()) {
             existingRestaurant.setRestaurantName(updatedName);
         }
 
         String updatedLocation = restaurantRequest.getRestaurantLocation();
-        if (updatedLocation != null) {
+        if (updatedLocation != null && !updatedLocation.isEmpty()) {
             existingRestaurant.setRestaurantLocation(updatedLocation);
         }
 
-        // Save the updated restaurant entity
         return restaurantRepository.save(existingRestaurant);
     }
 
-    public Long getRestaurantIdByAppUserId(Integer appUserId) {
+
+    public Long getRestaurantIdByAppUserId(Long appUserId) {
         Restaurant restaurant = restaurantRepository.findRestaurantIdById(appUserId);
         if (restaurant != null) {
             return restaurant.getRestaurantId();

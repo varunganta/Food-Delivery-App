@@ -37,7 +37,7 @@ public class RestaurantController {
     }
 
     @GetMapping("/restaurant/by-app-user/{appUserId}")
-    public ResponseEntity<Long> getRestaurantIdByAppUserId(@PathVariable("appUserId") int appUserId) {
+    public ResponseEntity<Long> getRestaurantIdByAppUserId(@PathVariable("appUserId") Long appUserId) {
         Long restaurantId = restaurantService.getRestaurantIdByAppUserId( appUserId);
         if (restaurantId != null) {
             return ResponseEntity.ok(restaurantId);

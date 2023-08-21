@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrdersService {
@@ -36,7 +37,27 @@ public class OrdersService {
         this.restaurantRepository = restaurantRepository;
     }
 
+//    public Orders createOrder(OrdersRequest ordersRequest) {
+//        Orders newOrder = convertToOrderEntity(ordersRequest);
+//
+//        if (!isValidOrderItems(newOrder)) {
+//            throw new IllegalArgumentException("Invalid order items. MenuIds must belong to the same restaurant.");
+//        }
+//
+//        Long totalPrice = calculateTotalPrice(newOrder.getOrderId());
+//        newOrder.setTotalPrice(totalPrice);
+//        return ordersRepository.save(newOrder);
+//    }
+
     public Orders createOrder(OrdersRequest ordersRequest) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String customerEmail = authentication.getName();
+        Long appUserId = userRepository.findByEmail(customerEmail).orElse(null).getId();
+
+        if (appUserId == null || !appUserId.equals(ordersRequest.getCustomerId())) {
+            throw new IllegalArgumentException("Unauthorized: Customer ID mismatch");
+        }
+
         Orders newOrder = convertToOrderEntity(ordersRequest);
 
         if (!isValidOrderItems(newOrder)) {
@@ -47,73 +68,6 @@ public class OrdersService {
         newOrder.setTotalPrice(totalPrice);
         return ordersRepository.save(newOrder);
     }
-
-//    public Orders createOrder(OrdersRequest ordersRequest) {
-//        Orders newOrder = convertToOrderEntity(ordersRequest);
-//
-//        if (!isValidOrderItems(newOrder)) {
-//            throw new IllegalArgumentException("Invalid order items. MenuIds must belong to the same restaurant.");
-//        }
-//
-//        List<OrderItem> orderItems = new ArrayList<>();
-//
-//        for (Long menuId : ordersRequest.getMenuIds()) {
-//            Menu menu = menuRepository.findById(menuId)
-//                    .orElseThrow(() -> new IllegalArgumentException("Menu with ID " + menuId + " not found"));
-//
-//            OrderItem orderItem = new OrderItem();
-//            orderItem.setMenu(menu);
-//            orderItem.setOrder(newOrder);
-//            orderItems.add(orderItem);
-//        }
-//
-//        newOrder.setOrderItems(orderItems);
-//
-//        Long totalPrice = calculateTotalPrice(newOrder.getOrderId());
-//        newOrder.setTotalPrice(totalPrice);
-//        return ordersRepository.save(newOrder);
-//    }
-
-//    @PostMapping("/create")
-//    public ResponseEntity<Orders> createOrder(@RequestBody OrdersRequest ordersRequest) {
-//        // Get the restaurant associated with the order
-//        Restaurant restaurant = restaurantRepository.findById(ordersRequest.getRestaurantId()).orElse(null);
-//        if (restaurant == null) {
-//            return ResponseEntity.badRequest().body(null); // Invalid restaurant ID
-//        }
-//
-//        // Fetch all menus associated with the restaurant
-//        List<Menu> restaurantMenus = menuRepository.findByRestaurantId(ordersRequest.getRestaurantId());
-//
-//        // Validate orderItems against the restaurant's menus
-//        List<OrderItemRequest> orderItems = ordersRequest.getOrderItems();
-//        if (orderItems != null) {
-//            for (OrderItemRequest orderItemRequest : orderItems) {
-//                Long menuId = orderItemRequest.getMenuId();
-//                // Check if the menuId exists in the list of restaurantMenus
-//                if (restaurantMenus.stream().noneMatch(menu -> menu.getId().equals(menuId))) {
-//                    return ResponseEntity.badRequest().body(null); // Invalid menuId for the restaurant
-//                }
-//            }
-//        }
-//
-//        // If all validation passes, proceed to create the order
-//        Orders newOrder = convertToOrderEntity(ordersRequest);
-//        Orders createdOrder = ordersService.createOrder(newOrder);
-//
-//        if (orderItems != null) {
-//            for (OrderItemRequest orderItemRequest : orderItems) {
-//                OrderItem newOrderItem = new OrderItem();
-//                newOrderItem.setOrderId(createdOrder.getOrderId());
-//                newOrderItem.setMenuId(orderItemRequest.getMenuId());
-//                newOrderItem.setPrice(orderItemRequest.getPrice());
-//
-//                orderItemService.createOrderItem(newOrderItem);
-//            }
-//        }
-//
-//        return ResponseEntity.status(HttpStatus.CREATED).body(createdOrder);
-//    }
 
     private boolean isValidOrderItems(Orders orders) {
         Long restaurantId = orders.getRestaurantId();
@@ -163,7 +117,7 @@ public class OrdersService {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String restaurantEmail = authentication.getName();
-        int appUserId = userRepository.findByEmail(restaurantEmail).get().getId();
+        Long appUserId = userRepository.findByEmail(restaurantEmail).get().getId();
         Long restaurantId = restaurantRepository.findByAppUserId(appUserId);
         boolean isAuthorized = authentication.getAuthorities().stream()
                 .anyMatch(auth -> auth.getAuthority().equals("RESTAURANT")
@@ -200,23 +154,23 @@ public class OrdersService {
 
     @Transactional
     public boolean deleteOrder(Long orderId) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String restaurantEmail = authentication.getName();
-        int appUserId = userRepository.findByEmail(restaurantEmail).get().getId();
-        Long restaurantId = restaurantRepository.findByAppUserId(appUserId);
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        String restaurantEmail = authentication.getName();
+//        Long appUserId = userRepository.findByEmail(restaurantEmail).get().getId();
+//        Long restaurantId = restaurantRepository.findByAppUserId(appUserId);
 
         Orders order = ordersRepository.findById(orderId).orElse(null);
         if (order == null) {
             return false;
         }
 
-        boolean isAuthorized = authentication.getAuthorities().stream()
-                .anyMatch(auth -> auth.getAuthority().equals("RESTAURANT")
-                        && order.getRestaurantId().equals(restaurantId));
-
-        if (!isAuthorized) {
-            return false;
-        }
+//        boolean isAuthorized = authentication.getAuthorities().stream()
+//                .anyMatch(auth -> auth.getAuthority().equals("RESTAURANT")
+//                        && order.getRestaurantId().equals(restaurantId));
+//
+//        if (!isAuthorized) {
+//            return false;
+//        }
 
         orderItemRepository.deleteByOrderId(orderId);
         ordersRepository.delete(order);
@@ -224,10 +178,6 @@ public class OrdersService {
         return true;
     }
 
-//    public Long calculateTotalPrice(Orders order) {
-//        Long totalPrice = ordersRepository.calculateTotalPriceByOrderId(order.getOrderId());
-//        return totalPrice != null ? totalPrice : 0L;
-//    }
     public Long calculateTotalPrice(Long orderId) {
         List<OrderItem> orderItems = orderItemRepository.findOrderItemsByOrderId(orderId);
         if (orderItems != null) {

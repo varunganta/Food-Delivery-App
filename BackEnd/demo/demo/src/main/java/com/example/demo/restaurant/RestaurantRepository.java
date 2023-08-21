@@ -8,8 +8,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
     @Query("SELECT r.restaurantId FROM Restaurant r WHERE r.appUser.id = :appUserId")
-    Long findByAppUserId(int appUserId);
+    Long findByAppUserId(Long appUserId);
 
     @Query("SELECT r FROM Restaurant r WHERE r.appUser.id = :appUserId")
-    Restaurant findRestaurantIdById(@Param("appUserId") Integer appUserId);
+    Restaurant findRestaurantIdById(@Param("appUserId") Long appUserId);
 }

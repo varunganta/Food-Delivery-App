@@ -12,7 +12,6 @@ import java.util.Optional;
 
 @Repository
 @Transactional(readOnly = true)
-// If an exception occurs during execution, spring rolls back the transaction, undoing changes
 public interface ConfirmationTokenRepository extends JpaRepository<ConfirmationToken, Long> {
     Optional<ConfirmationToken> findByToken(String token);
 

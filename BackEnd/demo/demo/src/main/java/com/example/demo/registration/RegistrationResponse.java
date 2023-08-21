@@ -24,5 +24,4 @@ public class RegistrationResponse {
     public void setVerificationStatus(boolean verificationStatus) {
         this.verificationStatus = verificationStatus;
     }
-    // add message responses here and remove from frontend
 }

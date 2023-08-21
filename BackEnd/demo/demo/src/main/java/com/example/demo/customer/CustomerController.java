@@ -26,7 +26,6 @@ public class CustomerController {
 
     @GetMapping("/customer/{id}")
     public ResponseEntity<AppUser> getCustomerById(@PathVariable("id") Long id) {
-        //int bleh = id.intValue();
         AppUser customer = customerService.getCustomerById(id);
         if (customer != null) {
             return ResponseEntity.ok(customer);

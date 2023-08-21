@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Input, Card, Button, message } from 'antd';
 import SideMenuCustomer from '../assets/components/SideMenuCustomer';
-import backgroundImage from '/home/varun/Desktop/FrontEnd/login-front/src/25386.jpg'; // Replace with your image path
+import backgroundImage from '/home/varun/Desktop/FrontEnd/login-front/src/25386.jpg';
 import axios from 'axios';
 
 const CustomerSettings = () => {

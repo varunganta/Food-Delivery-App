@@ -29,7 +29,6 @@ public class Restaurant {
     private Long restaurantId;
     private String restaurantName;
     private String restaurantLocation;
-    //use google map apis for location
     @OneToOne
     @JoinColumn(name = "id")
     private AppUser appUser;

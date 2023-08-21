@@ -125,6 +125,10 @@ const OrderHistory = () => {
        }
      };
 
+   const sortOrderHistory = (history) => {
+       return history.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+     };
+
   useEffect(() => {
       fetchOrderHistory();
     }, []);

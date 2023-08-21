@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Card, Table, Button } from 'antd';
-import { Link } from 'react-router-dom'; // Import Link from react-router-dom
+import { Link } from 'react-router-dom';
 import backgroundImage from '/home/varun/Desktop/FrontEnd/login-front/src/25386.jpg';
 import axios from 'axios';
 import SideMenuCustomer from '../assets/components/SideMenuCustomer.js';
